@@ -5,3 +5,4 @@ eslint.config.js
 config-prtest.json
 configtesticle.json
 /modules/userdata/servers
+.DS_Store
