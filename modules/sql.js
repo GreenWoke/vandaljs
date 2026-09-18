@@ -123,6 +123,13 @@ checkSentinel(){
         this.is_sentinel=true
     }
 }
+authenticateUser(){
+    if(this.admin_level>0){
+        return true
+    } else{
+    return false
+    }
+}
 }
 
 

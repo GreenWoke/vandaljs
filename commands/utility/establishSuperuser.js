@@ -1,13 +1,16 @@
-const { SlashCommandBuilder } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
-const config = require(process.cwd() + '/config.json');
-module.exports = {
+import { SlashCommandBuilder } from 'discord.js';
+import { User } from '../../modules/sql.js'
+import vandalAdminRole from '../../config.json' with {type: "json"};
+export default {
     data: new SlashCommandBuilder()
         .setName('admin')
         .setDescription('Elevates the command runners permissions level'),
     async execute(interaction) {
-        if (interaction.member.roles.cache.has(config.vandalAdminRole)) {
-            userData.newSuperUser(interaction.member.id);
+        const userObject = await User.create(interaction.user.id)
+        console.log(vandalAdminRole);
+        if (interaction.member.roles.cache.has(vandalAdminRole.vandalAdminRole)) {
+            userObject.admin_level = 2;
+            await userObject.save();
             await interaction.reply('Your permissions value has been elevated!');
         } else {
             await interaction.reply('You are not authorized!');

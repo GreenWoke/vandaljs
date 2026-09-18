@@ -11,10 +11,9 @@ export default {
 		const specificUser = interaction.options.getUser('user');
 		//wow chatgpt actually taught me about this syntax, rare chatgpt w? I wrote this theres no direct
 		//ai code anywhere in this codebase.
-		const userID = specificUser ?? interaction.user.id;
+		const userID = specificUser ?? interaction.user;
 		const userpfp = interaction.user.displayAvatarURL({ dynamic: true, size: 1024 });
 		const username = userID.globalName;
-		console.log(interaction.user.id);
 		const userObject = await User.create(interaction.user.id);
 		//grab the users info from the data structure
 		//these are established in the same order as the params because
@@ -25,6 +24,6 @@ export default {
 		let totalmsgs = userObject.msg_sent
 		let hoursvc = userObject.hours_in_vc
 		//call the embed builder with this data
-		await interaction.reply(await new PrEmbed('level', level, totalxp, totalmsgs, hoursvc, userpfp, username, userID).build());
+		await interaction.reply(await new PrEmbed('level', level, totalxp, totalmsgs, hoursvc, userpfp, username, interaction.user.id).build());
 	},
 };
