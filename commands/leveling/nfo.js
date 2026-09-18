@@ -1,7 +1,7 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
-const PrEmbed = require(process.cwd() + '/modules/embedBuilder.js')
-module.exports = {
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import {User} from '../../modules/sql.js'
+import { PrEmbed } from '../../modules/embedBuilder.js'
+export default {
 	data: new SlashCommandBuilder()
 		.setName('nfo')
 		.setDescription('Shows you your total XP, level, and standing in the server.')
@@ -14,14 +14,15 @@ module.exports = {
 		const userID = specificUser ?? interaction.user;
 		const userpfp = userID.displayAvatarURL({ dynamic: true, size: 1024 });
 		const username = userID.globalName;
+		const userObject = await User.create(userID)
 		//grab the users info from the data structure
 		//these are established in the same order as the params because
 		//javascript or something idk
 		console.log("Retrieving data for " + userID + " in the data structure.");
-		level = userData.getUserData('level', userID);
-		totalxp = userData.getUserData('xp', userID);
-		totalmsgs = userData.getUserData('totalmsgs', userID);
-		hoursvc = userData.getUserData('hoursvc', userID);
+		level = userObject.level
+		totalxp = userObject.xp
+		totalmsgs = userObject.msg_sent
+		hoursvc = userObject.hours_in_vc
 		//call the embed builder with this data
 		await interaction.reply(new PrEmbed('level', level, totalxp, totalmsgs, hoursvc, userpfp, username, userID).build());
 	},

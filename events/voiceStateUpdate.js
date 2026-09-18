@@ -1,16 +1,16 @@
-const {Events, ActivityType } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
+import {Events, ActivityType } from 'discord.js';
+import { User } from '../modules/sql.js'
 const voiceSessions = new Map();
-module.exports = {
+export default {
     name: Events.VoiceStateUpdate,
-    execute(oldState, newState) {
+    async execute(oldState, newState) {
+        const userObject = User.create(newState.id)
         const client = newState.client;
         const guild = newState.guild;
         const sentinelRole = guild.roles.cache.get('1328727053859815439');
-        const userId = newState.id;
         const oldChannel = oldState.channel;
         const newChannel = newState.channel;
-        const currentLevel = userData.getUserData('level', userId);
+        const currentLevel = userObject.level;
         const outputChannel = client.channels.cache.get('1327755122960236636');
         // USER JOINS VC
         if (!oldChannel && newChannel) {

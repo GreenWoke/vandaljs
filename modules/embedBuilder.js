@@ -1,12 +1,24 @@
-const { EmbedBuilder } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
-class PrEmbed {
+import { EmbedBuilder } from 'discord.js';
+import { User } from './sql.js'
+export class PrEmbed {
     constructor(type, level, xp, msgs, hvc, userpfp, username, userid) {
-        const sentinel = parseInt(userData.getUserData('sentinel', userid));
+        this.type = type;
+        this.level = level;
+        this.xp = xp;
+        this.msgs = msgs;
+        this.hvc = hvc;
+        this.userpfp = userpfp;
+        this.username = username;
+        this.userid = userid;
+    }
+
+    async build() {
+        const userObject = await User.create(userid);
+        const sentinel = userObject.is_sentinel;
         let bannerFile;
         let standingMessage;
         let embedColor;
-        if (sentinel > 0) {
+        if (sentinel) {
             bannerFile = 'https://deepinpowered.xyz/VANDAL/sentbanner.png';
             standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
             embedColor = '#1D47B7'
@@ -27,27 +39,27 @@ class PrEmbed {
                 name: "VANDAL",
                 iconURL: "https://deepinpowered.xyz/VANDAL/vandal.png",
             })
-            .setTitle(username)
+            .setTitle(this.username)
             .setDescription(standingMessage)
             .addFields(
                 {
                     name: "Level:",
-                    value: String(level),
+                    value: String(this.level),
                     inline: false
                 },
                 {
                     name: "Total XP Earned:",
-                    value: String(xp),
+                    value: String(this.xp),
                     inline: false
                 },
                 {
                     name: "Messages Sent:",
-                    value: String(msgs),
+                    value: String(this.msgs),
                     inline: false
                 },
-                {
+                {//fix me!
                     name: "Time spent in VC:",
-                    value: String(userData.formatTime(hvc)),
+                    value: String('Not Implemented'),
                     inline: false
                 }
             )
@@ -59,11 +71,6 @@ class PrEmbed {
                 iconURL: "https://labs.projectradio.org/VANDAL/prlogowhite80x80.png",
             })
             .setTimestamp();
-    }
-
-    build() {
         return { embeds: [this.embed] };
     }
 }
-
-module.exports = PrEmbed;
