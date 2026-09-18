@@ -13,7 +13,7 @@ export class PrEmbed {
     }
 
     async build() {
-        const userObject = await User.create(userid);
+        const userObject = await User.create(this.userid);
         const sentinel = userObject.is_sentinel;
         let bannerFile;
         let standingMessage;
@@ -22,7 +22,7 @@ export class PrEmbed {
             bannerFile = 'https://deepinpowered.xyz/VANDAL/sentbanner.png';
             standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
             embedColor = '#1D47B7'
-        } else if (xp < 0) {
+        } else if (this.xp < 0) {
             bannerFile = 'https://deepinpowered.xyz/VANDAL/hellbanner' + Math.floor(1+(Math.random()*6)) + '.png'
             console.log(bannerFile);
             standingMessage = "**You are in HELL, not sure how you ended up here honestly...\n\nYour standing:**"
@@ -39,7 +39,7 @@ export class PrEmbed {
                 name: "VANDAL",
                 iconURL: "https://deepinpowered.xyz/VANDAL/vandal.png",
             })
-            .setTitle(this.username)
+            .setTitle(String(this.username))
             .setDescription(standingMessage)
             .addFields(
                 {
@@ -65,7 +65,7 @@ export class PrEmbed {
             )
             .setColor(embedColor)
             .setImage(bannerFile)
-            .setThumbnail(String(userpfp))
+            .setThumbnail(String(this.userpfp))
             .setFooter({
                 text: "Project Radio | Your guide through the noise.",
                 iconURL: "https://labs.projectradio.org/VANDAL/prlogowhite80x80.png",

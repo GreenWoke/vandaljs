@@ -6,7 +6,7 @@ export default {
     "once": false,
 
     async execute(message) {
-        const userObject = await User.create(message.author);
+        const userObject = await User.create(message.author.id);
         // Ignore bots (VERY IMPORTANT)
         const { client } = message
         if (message.author.bot) return;
@@ -20,7 +20,7 @@ export default {
         //userData.xpAdd(message.author, 10);
         userObject.msgAdd(1);
         console.log('checking for level up');
-        newLevel = userObject.level;
+        let newLevel = userObject.level;
         console.log(newLevel);
         if (newLevel > currentLevel && newLevel == 10) {
             await member.roles.add(sentinelRole);

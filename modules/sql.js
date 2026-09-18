@@ -12,7 +12,7 @@ const pool = new Pool({
 
 async function enrollUserData(userid) {
     console.log('new user onboarding with userid ' + userid);
-   await queryDB('INSERT INTO users(user_id, admin_level, is_sentinel, msg_sent, hours_in_vc, xp, level) VALUES($1, $2, $3, $4, $5, $6, $7)',[userid, 0, false, 0, 0, 0, 0]);
+   await queryDB('INSERT INTO users(user_id, admin_level, is_sentinel, msg_sent, hours_in_vc, xp, usrlevel) VALUES($1, $2, $3, $4, $5, $6, $7)',[userid, 0, false, 0, 0, 0, 0]);
 }
 async function queryDB(text,values){
     const query ={  
@@ -51,7 +51,7 @@ export class User {
         this.is_sentinel = data.is_sentinel;
         this.hours_in_vc = Number(data.hours_in_vc)
         this.msg_sent = Number(data.msg_sent);
-        this.level = Number(data.level);
+        this.level = Number(data.usrlevel);
         this.xp = Number(data.xp);
     }
 
@@ -81,7 +81,7 @@ export class User {
                  msg_sent = $3,
                  hours_in_vc = $4,
                  xp = $5,
-                 level = $6
+                 usrlevel = $6
              WHERE user_id = $7`,
             [
                 this.admin_level,
@@ -126,7 +126,7 @@ checkSentinel(){
 }
 
 
-const userObject = await User.create(21);
+//const userObject = await User.create(21);
 /*
 const userObject = await User.create(22);
 userObject.setLevel(22)

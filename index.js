@@ -32,8 +32,8 @@ for (const folder of commandFolders) {
 	for (const file of commandFiles) {
 		const filePath = join(commandsPath, file);
 		const command = await import(filePath);
-		if ('data' in command && 'execute' in command) {
-			client.commands.set(command.data.name, command);
+		if ('data' in command.default && 'execute' in command.default) {
+			client.commands.set(command.default.data.name, command.default);
 		} else {
 			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
 		}
@@ -47,9 +47,9 @@ for (const file of eventFiles) {
 	const filePath = join(eventsPath, file);
 	const event = await import(filePath);
 	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
+		client.once(event.default.name, (...args) => event.default.execute(...args));
 	} else {
-		client.on(event.name, (...args) => event.execute(...args));
+		client.on(event.default.name, (...args) => event.default.execute(...args));
 	}
 }
 /*
