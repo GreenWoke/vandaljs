@@ -1,5 +1,13 @@
 import { EmbedBuilder } from 'discord.js';
 import { User } from './sql.js'
+function formatTime(ms) {
+
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / 60000) % 60;
+    const hours = Math.floor(ms / 3600000);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+}
 export class PrEmbed {
     constructor(type, level, xp, msgs, hvc, userpfp, username, userid) {
         this.type = type;
@@ -61,7 +69,7 @@ export class PrEmbed {
                 },
                 {//fix me!
                     name: "Time spent in VC:",
-                    value: String('Not Implemented'),
+                    value: String(formatTime(userObject.hours_in_vc)),
                     inline: false
                 }
             )

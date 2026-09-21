@@ -24,6 +24,14 @@ async function queryDB(text,values){
 }
 
 
+function formatTime(ms) {
+
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / 60000) % 60;
+    const hours = Math.floor(ms / 3600000);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+}
 
 function levelFromXP(totalXP) {
     let level = 0;

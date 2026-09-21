@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js');
+import { SlashCommandBuilder } from 'discord.js';
+import { User } from '../modules/sql.js';
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('adminCommand')
@@ -8,13 +8,8 @@ module.exports = {
         .addIntegerOption((option) => option.setName('value').setDescription('Placeholder value').setRequired(true)),
 
     async execute(interaction) {
-        const target = interaction.options.getUser('user');
-        const value = interaction.options.getInteger('value');
-        const username = target.username;
-        if (!userData.authenticateUser(interaction.member.id)) { };
-        //console.log(userData.getUserInfo(interaction.user, 'permissions'));
-        //console.log('target: ' + target + 'qty: ' + qty);
-        if (!userData.authenticateUser(interaction.member.id)) {
+        const userObject = await User.create(interaction.author.id);
+        if (!userObject.authenticateUser()) {
             await interaction.reply('You do not have permission to execute this command.');
 
         } else {
