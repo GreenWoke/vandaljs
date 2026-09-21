@@ -1,14 +1,8 @@
 import pg from 'pg'
+import db from '../config.json' with {type: "json"};
 const { Pool, Client } = pg
 
-
-const pool = new Pool({
-    user: 'postgres',
-    password: 'PostgresDB!',
-    host: '192.168.79.122',
-    port: '5432',
-    database: 'vandaljs',
-})
+const pool = new Pool(db.db);
 
 async function enrollUserData(userid) {
     console.log('new user onboarding with userid ' + userid);
