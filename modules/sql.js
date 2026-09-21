@@ -22,17 +22,6 @@ async function queryDB(text,values){
     const res = await pool.query(query)
     return res
 }
-
-
-function formatTime(ms) {
-
-    const seconds = Math.floor(ms / 1000) % 60;
-    const minutes = Math.floor(ms / 60000) % 60;
-    const hours = Math.floor(ms / 3600000);
-
-    return `${hours}h ${minutes}m ${seconds}s`;
-}
-
 function levelFromXP(totalXP) {
     let level = 0;
     while (totalXP >= xpRequiredForLevel(level + 1)) {
@@ -136,6 +125,15 @@ authenticateUser(){
     } else{
         return false
     }
+}
+addVoiceChatTime(ms){
+    const hours = Math.floor(ms / 3600000);
+    let xptoadd = Math.ceil(((Math.random() * 200)+250)*hours);
+    this.hours_in_vc += ms;
+    this.xp += xptoadd;
+    this.level = levelFromXP(this.xp);
+    this.checkSentinel();
+    this.save();
 }
 }
 

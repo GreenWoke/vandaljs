@@ -12,15 +12,13 @@ export default {
 		const target = interaction.options.getUser('user');
 		const qty = interaction.options.getInteger('qty');
 		const username = target.username;
-		//console.log(userData.getUserInfo(interaction.user, 'permissions'));
-		//console.log('target: ' + target + 'qty: ' + qty);
-			if(!userObject.authenticateUser()){
+		if(!userObject.authenticateUser()){
 			await interaction.reply('You do not have permission to execute this command.');
 
 		}else{
-		userObject.xpAdd(qty);
-		//reply with new xp value
-		await interaction.reply('Ok!  New XP Value for ' + username + ' is: ' + userObject.xp);
+			userObject.xpAdd(qty);
+			//reply with new xp value
+			await interaction.reply('Ok!  New XP Value for ' + username + ' is: ' + userObject.xp);
 		};
 	},
 };
