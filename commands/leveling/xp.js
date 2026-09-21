@@ -12,13 +12,14 @@ export default {
 		const target = interaction.options.getUser('user');
 		const qty = interaction.options.getInteger('qty');
 		const username = target.username;
+		const targetUserObject = await User.create(target.id)
 		if(!userObject.authenticateUser()){
 			await interaction.reply('You do not have permission to execute this command.');
 
 		}else{
-			userObject.xpAdd(qty);
+			targetUserObject.xpAdd(qty);
 			//reply with new xp value
-			await interaction.reply('Ok!  New XP Value for ' + username + ' is: ' + userObject.xp);
+			await interaction.reply('Ok!  New XP Value for ' + username + ' is: ' + targetUserObject.xp);
 		};
 	},
 };
