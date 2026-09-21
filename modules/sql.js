@@ -43,7 +43,6 @@ function xpRequiredForLevel(level) {
 
     return xpNeeded;
 }
-//await client.end()
 export class User {
     constructor(userid, data) {
         this.userID = userid;
@@ -127,29 +126,9 @@ authenticateUser(){
     if(this.admin_level>0){
         return true
     } else{
-    return false
+        return false
     }
 }
 }
 
 
-//const userObject = await User.create(21);
-/*
-const userObject = await User.create(22);
-userObject.setLevel(22)
-console.log(userObject.level);
-console.log(userObject.xp);
-*/
-
-//await enrollUserData(22)
-//enrollUserData(23)
-//enrollUserData(24)
-
-
-//const res = await client.query(query)
-//console.log(res.rows[0]);
-
-
-//await userObject.save();
-//console.log(userObject.xp)
-//module.exports = User;
