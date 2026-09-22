@@ -2,5 +2,12 @@
     "token": "",
     "clientId": "",
     "guildId": "",
-    "vandalAdminRole": ""
+    "vandalAdminRole": "",
+    "db":{
+            "user": "",
+            "password": "",
+            "host": "",
+            "port": "",
+            "database": ""
+    }
 }

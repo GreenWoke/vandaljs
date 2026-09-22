@@ -1,6 +1,6 @@
-const { Events, MessageFlags, GuildMember } = require('discord.js');
+import { Events, MessageFlags, GuildMember } from 'discord.js';
 
-module.exports = {
+export default {
     name: Events.GuildMemberAdd,
     "once": false,
 

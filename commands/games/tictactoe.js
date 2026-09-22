@@ -2,21 +2,22 @@
 This is the only place its direct input contributes to this codebase however.
 
 */
-const {
+import {
     SlashCommandBuilder,
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     ComponentType
-} = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
-module.exports = {
+} from 'discord.js';
+import { User } from '../../modules/sql.js'
+export default {
     data: new SlashCommandBuilder()
         .setName('tictactoe')
         .setDescription('Play tic tac toe against the bot. Gain XP for winning, loose XP for loosing.'),
 
     async execute(interaction) {
+        const userObject = await User.create(interaction.user.id);
         const author = interaction.user;
         let board = [null, null, null, null, null, null, null, null, null];
         let xpAtHand = Math.ceil(Math.random() * 100);
@@ -125,11 +126,11 @@ module.exports = {
                     collector.stop();
                     console.log(result);
                     if (result === 'draw') {
-                        userData.xpAdd(author, xpAtHand);
+                        userObject.xpAdd(xpAtHand);
                     } else if (result === player) {
-                        userData.xpAdd(author, xpAtHand);
+                        userObject.xpAdd(xpAtHand);
                     } else if (result === bot) {
-                        userData.xpAdd(author, -(xpAtHand));
+                        userObject.xpAdd(-(xpAtHand));
                     }
 
                     const endEmbed = EmbedBuilder.from(embed)

@@ -1,69 +1,83 @@
-const { EmbedBuilder } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
-class PrEmbed {
+import { EmbedBuilder } from 'discord.js';
+import { User } from './sql.js'
+function formatTime(ms) {
+
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / 60000) % 60;
+    const hours = Math.floor(ms / 3600000);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+}
+export class PrEmbed {
     constructor(type, level, xp, msgs, hvc, userpfp, username, userid) {
-        const sentinel = parseInt(userData.getUserData('sentinel', userid));
+        this.type = type;
+        this.level = level;
+        this.xp = xp;
+        this.msgs = msgs;
+        this.hvc = hvc;
+        this.userpfp = userpfp;
+        this.username = username;
+        this.userid = userid;
+    }
+
+    async build() {
+        const userObject = await User.create(this.userid);
+        const sentinel = userObject.is_sentinel;
         let bannerFile;
         let standingMessage;
         let embedColor;
-        if (sentinel > 0) {
-            bannerFile = 'https://deepinpowered.xyz/VANDAL/sentbanner.png';
+        
+        if (sentinel) {
+            bannerFile = 'https://projectradio.org/VANDAL/sentbanner.png';
             standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
             embedColor = '#1D47B7'
-        } else if (xp < 0) {
-            bannerFile = 'https://deepinpowered.xyz/VANDAL/hellbanner' + Math.floor(1+(Math.random()*6)) + '.png'
-            console.log(bannerFile);
+        } else if (this.xp < 0) {
+            bannerFile = 'https://projectradio.org/VANDAL/hellbanner.png'
             standingMessage = "**You are in HELL, not sure how you ended up here honestly...\n\nYour standing:**"
             embedColor = '#FFFFFF'
 
         } else {
-            bannerFile = 'https://deepinpowered.xyz/VANDAL/ccbanner1.png'; console.log(bannerFile);
+            bannerFile = 'https://projectradio.org/VANDAL/ccbanner1.png';
             standingMessage = "**Your standing:**"
             embedColor = '#057205'
         }
-
         this.embed = new EmbedBuilder()
             .setAuthor({
                 name: "VANDAL",
-                iconURL: "https://deepinpowered.xyz/VANDAL/vandal.png",
+                iconURL: "https://projectradio.org/VANDAL/VANDAL-avatar-1024.png",
             })
-            .setTitle(username)
+            .setTitle(String(this.username))
             .setDescription(standingMessage)
             .addFields(
                 {
                     name: "Level:",
-                    value: String(level),
+                    value: String(this.level),
                     inline: false
                 },
                 {
                     name: "Total XP Earned:",
-                    value: String(xp),
+                    value: String(this.xp),
                     inline: false
                 },
                 {
                     name: "Messages Sent:",
-                    value: String(msgs),
+                    value: String(this.msgs),
                     inline: false
                 },
                 {
                     name: "Time spent in VC:",
-                    value: String(userData.formatTime(hvc)),
+                    value: String(formatTime(this.hvc)),
                     inline: false
                 }
             )
             .setColor(embedColor)
             .setImage(bannerFile)
-            .setThumbnail(String(userpfp))
+            .setThumbnail(String(this.userpfp))
             .setFooter({
                 text: "Project Radio | Your guide through the noise.",
-                iconURL: "https://labs.projectradio.org/VANDAL/prlogowhite80x80.png",
+                iconURL: "https://projectradio.org/VANDAL/prlogowhite80x80.png",
             })
             .setTimestamp();
-    }
-
-    build() {
         return { embeds: [this.embed] };
     }
 }
-
-module.exports = PrEmbed;

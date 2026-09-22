@@ -1,26 +1,26 @@
-const {Events, ActivityType } = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
+import {Events, ActivityType } from 'discord.js';
+import { User } from '../modules/sql.js'
 const voiceSessions = new Map();
-module.exports = {
+export default {
     name: Events.VoiceStateUpdate,
-    execute(oldState, newState) {
+    async execute(oldState, newState) {
+        const userObject = await User.create(newState.id)
         const client = newState.client;
         const guild = newState.guild;
         const sentinelRole = guild.roles.cache.get('1328727053859815439');
-        const userId = newState.id;
         const oldChannel = oldState.channel;
         const newChannel = newState.channel;
-        const currentLevel = userData.getUserData('level', userId);
+        const currentLevel = userObject.level;
         const outputChannel = client.channels.cache.get('1327755122960236636');
         // USER JOINS VC
         if (!oldChannel && newChannel) {
-            voiceSessions.set(userId, Date.now());
+            voiceSessions.set(oldState.id, Date.now());
         }
 
         // USER LEAVES VC
         if (oldChannel && !newChannel) {
 
-            const joinTime = voiceSessions.get(userId);
+            const joinTime = voiceSessions.get(oldState.id);
 
             if (!joinTime) return;
 
@@ -28,8 +28,8 @@ module.exports = {
 
             console.log(`${newState.member.user.tag} spent ${Math.floor(timeSpent/1000)} seconds in VC`);
 
-            userData.addVoiceChatTime(userId, timeSpent)
-            newLevel = userData.getUserData('level', userId)
+            userObject.addVoiceChatTime(timeSpent)
+            let newLevel = userObject.level
             if (newLevel > currentLevel && newLevel == 10) {
             newState.member.roles.add(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel + levelUpStringSentinel);

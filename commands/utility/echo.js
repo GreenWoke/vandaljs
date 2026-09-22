@@ -1,19 +1,19 @@
-const {
+import {
     ContextMenuCommandBuilder,
     ApplicationCommandType,
     ActionRowBuilder,
     ChannelSelectMenuBuilder,
     ChannelType
-} = require('discord.js');
-const userData = require(process.cwd() + '/modules/userdata.js')
-module.exports = {
+} from 'discord.js';
+import { User } from '../../modules/sql.js'
+export default {
     data: new ContextMenuCommandBuilder()
-        .setName('Echo')
+        .setName('echo')
         .setType(ApplicationCommandType.Message),
-
     async execute(interaction) {
+        const userObject = await User.create(interaction.user.id);
         const targetMessage = interaction.targetMessage;
-   if (!userData.authenticateUser(interaction.member.id)) {
+   if (!userObject.authenticateUser()) {
             await interaction.reply('You do not have permission to execute this command.');
 
         } else {
