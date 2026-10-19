@@ -13,7 +13,6 @@ export default {
 		const userpfp = discordUserObject.displayAvatarURL({ dynamic: true, size: 1024 });
 		const username = discordUserObject.globalName;
 		const userObject = await User.create(discordUserObject.id);
-		console.log("Retrieving data for " + discordUserObject + " in the data structure.");
 		let level = userObject.level
 		let totalxp = userObject.xp
 		let totalmsgs = userObject.msg_sent
