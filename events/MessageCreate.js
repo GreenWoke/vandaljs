@@ -11,7 +11,7 @@ export default {
         const { client } = message
         if (message.author.bot) return;
         const outputChannel = client.channels.cache.get('1327755122960236636');
-        const currentLevel = userObject.level
+        let currentLevel = userObject.level
         const pingObject = "<@" + message.author + ">"
         const levelUpString = ' has reached terminal operator access level '
         const levelUpStringSentinel = ' | Congratulations, you are now a SENTINEL '

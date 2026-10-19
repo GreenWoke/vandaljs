@@ -47,7 +47,7 @@ export default {
         // USER SWITCHES CHANNEL
         if (oldChannel && newChannel && oldChannel.id !== newChannel.id) {
 
-            const joinTime = voiceSessions.get(userId);
+            const joinTime = voiceSessions.get(newState.id);
 
             if (!joinTime) return;
 
